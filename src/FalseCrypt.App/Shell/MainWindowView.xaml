@@ -7,15 +7,15 @@
     xmlns:menu="clr-namespace:ModernApplicationFramework.Controls.Menu;assembly=ModernApplicationFramework"
     xmlns:windows="clr-namespace:ModernApplicationFramework.Controls.Windows;assembly=ModernApplicationFramework"
     Title="MainWindow"
-    Width="525"
+    Width="600"
     Height="350"
     mc:Ignorable="d">
     <DockPanel LastChildFill="True">
-        <menu:Menu MinHeight="20" DockPanel.Dock="Top">
+        <!--<menu:Menu MinHeight="20" DockPanel.Dock="Top">
             <menu:MenuItem Header="Datei">
                 <menu:MenuItem Header="Verschlüssel Datei..." />
             </menu:MenuItem>
-        </menu:Menu>
+        </menu:Menu>-->
         <ContentControl x:Name="ActiveItem" />
     </DockPanel>
 </windows:MainWindow>

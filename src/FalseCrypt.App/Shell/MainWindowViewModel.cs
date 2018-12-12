@@ -19,7 +19,7 @@ namespace FalseCrypt.App.Shell
         public override void OnImportsSatisfied()
         {
             base.OnImportsSatisfied();
-            ActivateItem(IoC.Get<TestScreenViewModel>());
+            ActivateItem(IoC.Get<WelcomeViewModel>());
         }
     }
 }

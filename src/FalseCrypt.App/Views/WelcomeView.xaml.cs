@@ -1,8 +1,8 @@
 ﻿namespace FalseCrypt.App.Views
 {
-    public partial class TestScreenView 
+    public partial class WelcomeView
     {
-        public TestScreenView()
+        public WelcomeView()
         {
             InitializeComponent();
         }

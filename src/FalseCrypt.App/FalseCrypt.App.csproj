@@ -75,9 +75,9 @@
       <DependentUpon>MainWindowView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Shell\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\TestScreenViewModel.cs" />
-    <Compile Include="Views\TestScreenView.xaml.cs">
-      <DependentUpon>TestScreenView.xaml</DependentUpon>
+    <Compile Include="ViewModels\WelcomeViewModel.cs" />
+    <Compile Include="Views\WelcomeView.xaml.cs">
+      <DependentUpon>WelcomeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -88,7 +88,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\TestScreenView.xaml">
+    <Page Include="Views\WelcomeView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -144,6 +144,10 @@
     <ProjectReference Include="..\..\submodules\ModernApplicationFramework\src\ModernApplicationFramework\ModernApplicationFramework.csproj">
       <Project>{74f6c6a1-64bb-47d4-9e7f-6cd5c4ca166c}</Project>
       <Name>ModernApplicationFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FalseCrypt.Crypto\FalseCrypt.Crypto.csproj">
+      <Project>{3cf54a39-0d60-410e-aa37-073e00fb2c70}</Project>
+      <Name>FalseCrypt.Crypto</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

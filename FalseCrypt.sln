@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModernApplicationFramework.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModernApplicationFramework.Settings", "submodules\ModernApplicationFramework\src\ModernApplicationFramework.Settings\ModernApplicationFramework.Settings.csproj", "{240CC7DB-F3A0-48E7-A8EB-5785A90128BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FalseCrypt.Crypto", "src\FalseCrypt.Crypto\FalseCrypt.Crypto.csproj", "{3CF54A39-0D60-410E-AA37-073E00FB2C70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{240CC7DB-F3A0-48E7-A8EB-5785A90128BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{240CC7DB-F3A0-48E7-A8EB-5785A90128BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{240CC7DB-F3A0-48E7-A8EB-5785A90128BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CF54A39-0D60-410E-AA37-073E00FB2C70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CF54A39-0D60-410E-AA37-073E00FB2C70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CF54A39-0D60-410E-AA37-073E00FB2C70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CF54A39-0D60-410E-AA37-073E00FB2C70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +101,7 @@ Global
 		{E3F05145-F9A9-42A4-B67D-ADE61980B20A} = {F2171BA2-8814-4DF7-ABAB-BE937F41A1B0}
 		{79388073-9D36-49FE-BBEE-3126A1FA9DDE} = {F2171BA2-8814-4DF7-ABAB-BE937F41A1B0}
 		{240CC7DB-F3A0-48E7-A8EB-5785A90128BE} = {F2171BA2-8814-4DF7-ABAB-BE937F41A1B0}
+		{3CF54A39-0D60-410E-AA37-073E00FB2C70} = {44040701-31DA-4915-B879-C9CD3E19556C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E769C141-3C12-4BD0-91B2-058F30E0F0F4}
