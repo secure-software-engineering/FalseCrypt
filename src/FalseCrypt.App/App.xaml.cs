@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
+using Caliburn.Micro;
+using ModernApplicationFramework.Interfaces.Services;
+using ModernApplicationFramework.Interfaces.ViewModels;
+using ModernApplicationFramework.Themes;
 
 namespace FalseCrypt.App
 {
-    /// <summary>
-    /// Interaktionslogik für "App.xaml"
-    /// </summary>
-    public partial class App : Application
+    public partial class App
     {
+        private void OnStartUp(object sender, StartupEventArgs e)
+        {
+            IoC.Get<IThemeManager>().Theme = new BlueTheme();
+
+
+            var m = new WindowManager();
+            m.ShowWindow(IoC.Get<IWindowViewModel>());
+        }
     }
 }

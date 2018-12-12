@@ -35,8 +35,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Caliburn.Micro.Core.3.2.0\lib\net45\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="Caliburn.Micro.Platform, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Caliburn.Micro.3.2.0\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="Caliburn.Micro.Platform.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Caliburn.Micro.3.2.0\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Annotations, Version=2018.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\JetBrains.Annotations.2018.2.1\lib\net20\JetBrains.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Caliburn.Micro.3.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,18 +71,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
+    <Compile Include="Shell\MainWindowView.xaml.cs">
+      <DependentUpon>MainWindowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shell\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\TestScreenViewModel.cs" />
+    <Compile Include="Views\TestScreenView.xaml.cs">
+      <DependentUpon>TestScreenView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="AppBootstrapper.cs" />
+    <Page Include="Shell\MainWindowView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\TestScreenView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -86,6 +111,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -93,6 +119,32 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\submodules\ModernApplicationFramework\src\ModernApplicationFramework.ImageCatalog\ModernApplicationFramework.ImageCatalog.csproj">
+      <Project>{a011f6f0-84ad-41ee-a920-a599b695855f}</Project>
+      <Name>ModernApplicationFramework.ImageCatalog</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\submodules\ModernApplicationFramework\src\ModernApplicationFramework.Imaging\ModernApplicationFramework.Imaging.csproj">
+      <Project>{d8b696a7-ba7d-4762-8c34-13b7f212074f}</Project>
+      <Name>ModernApplicationFramework.Imaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\submodules\ModernApplicationFramework\src\ModernApplicationFramework.Input\ModernApplicationFramework.Input.csproj">
+      <Project>{57acf623-794e-41e8-8033-1544d209a4e1}</Project>
+      <Name>ModernApplicationFramework.Input</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\submodules\ModernApplicationFramework\src\ModernApplicationFramework.Threading\ModernApplicationFramework.Threading.csproj">
+      <Project>{f6b73506-4197-49a6-9f57-6e83827d415c}</Project>
+      <Name>ModernApplicationFramework.Threading</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\submodules\ModernApplicationFramework\src\ModernApplicationFramework.Utilities\ModernApplicationFramework.Utilities.csproj">
+      <Project>{2b388979-5b07-4f0a-a302-0c575aaa21c0}</Project>
+      <Name>ModernApplicationFramework.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\submodules\ModernApplicationFramework\src\ModernApplicationFramework\ModernApplicationFramework.csproj">
+      <Project>{74f6c6a1-64bb-47d4-9e7f-6cd5c4ca166c}</Project>
+      <Name>ModernApplicationFramework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
