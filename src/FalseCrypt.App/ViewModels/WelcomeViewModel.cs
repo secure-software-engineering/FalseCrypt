@@ -12,20 +12,24 @@ namespace FalseCrypt.App.ViewModels
     [Export(typeof(WelcomeViewModel))]
     public class WelcomeViewModel : Screen
     {
-        public ICommand EncryptFileCommand { get; } = new Command(EncryptFile, () => true);
+        public ICommand EncryptFileCommand => new Command(EncryptFile, () => true);
 
-        public ICommand EncryptFolderCommand { get; } = new Command(EncryptFolder, () => true);
+        public ICommand EncryptFolderCommand => new Command(EncryptFolder, () => true);
 
-        public ICommand DecryptFileCommand { get; } = new Command(DecryptFile, () => true);
+        public ICommand DecryptFileCommand => new Command(DecryptFile, () => true);
 
-        public ICommand DecryptFolderCommand { get; } = new Command(DecryptFolder, () => true);
+        public ICommand DecryptFolderCommand => new Command(DecryptFolder, () => true);
 
-        private static void EncryptFile()
+        private void EncryptFile()
         {
             var files = GetFiles();
             if (files == null || !files.Any())
                 return;
 
+            var password = ShowPasswordEnter();
+            if (string.IsNullOrEmpty(password))
+                return;
+
             foreach (var file in files)
             {
                 if (!File.Exists(file))
@@ -33,19 +37,27 @@ namespace FalseCrypt.App.ViewModels
             }
         }
 
-        private static void EncryptFolder()
+        private void EncryptFolder()
         {
             var folder = GetFolder();
             if (string.IsNullOrEmpty(folder))
                 return;
+
+            var password = ShowPasswordEnter();
+            if (string.IsNullOrEmpty(password))
+                return;
         }
 
-        private static void DecryptFile()
+        private void DecryptFile()
         {
             var files = GetFiles("falsecrypt File (*.falsecrypt)|*.falsecrypt");
             if (files == null || !files.Any())
                 return;
 
+            var password = ShowPasswordEnter();
+            if (string.IsNullOrEmpty(password))
+                return;
+
             foreach (var file in files)
             {
                 if (!File.Exists(file))
@@ -53,10 +65,14 @@ namespace FalseCrypt.App.ViewModels
             }
         }
 
-        private static void DecryptFolder()
+        private void DecryptFolder()
         {
             var folder = GetFolder();
             if (string.IsNullOrEmpty(folder))
+                return;
+
+            var password = ShowPasswordEnter();
+            if (string.IsNullOrEmpty(password))
                 return;
         }
 
@@ -85,6 +101,14 @@ namespace FalseCrypt.App.ViewModels
                 return null;
 
             return fd.SelectedPath;
+        }
+
+        private string ShowPasswordEnter()
+        {
+            var wm = IoC.Get<IWindowManager>();
+            var selectionViewModel = IoC.Get<EnterPasswordViewModel>();
+            wm.ShowDialog(selectionViewModel);
+            return selectionViewModel.Password;
         }
     }
 }
