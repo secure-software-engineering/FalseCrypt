@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
+using FalseCrypt.Crypto;
 using ModernApplicationFramework.Controls.Dialogs.Native;
 using ModernApplicationFramework.Input.Command;
 
@@ -29,6 +30,9 @@ namespace FalseCrypt.App.ViewModels
             var password = ShowPasswordEnter();
             if (string.IsNullOrEmpty(password))
                 return;
+
+
+            var key = WeakPasswordDerivation.DerivePassword(password);
 
             foreach (var file in files)
             {
