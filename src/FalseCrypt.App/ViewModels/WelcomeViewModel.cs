@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using FalseCrypt.Crypto;
@@ -31,14 +33,14 @@ namespace FalseCrypt.App.ViewModels
             if (string.IsNullOrEmpty(password))
                 return;
 
-
-            var key = WeakPasswordDerivation.DerivePassword(password);
-
             foreach (var file in files)
             {
                 if (!File.Exists(file))
                     continue;
+                EncryptionCryptoWrapper.EncryptFileWithPassword(new FileInfo(file), password);
             }
+
+            MessageBox.Show("Successfully encrypted");
         }
 
         private void EncryptFolder()
@@ -50,6 +52,18 @@ namespace FalseCrypt.App.ViewModels
             var password = ShowPasswordEnter();
             if (string.IsNullOrEmpty(password))
                 return;
+
+            var files = Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories);
+
+            foreach (var file in files)
+            {
+                if (!File.Exists(file))
+                    continue;
+
+                var keyData = WeakPasswordDerivation.DerivePassword(password);
+                EncryptionCryptoWrapper.EncryptFile(new FileInfo(file), keyData.Key, keyData.Salt);
+            }
+            MessageBox.Show("Successfully encrypted");
         }
 
         private void DecryptFile()
@@ -66,7 +80,17 @@ namespace FalseCrypt.App.ViewModels
             {
                 if (!File.Exists(file))
                     continue;
+                try
+                {
+                    EncryptionCryptoWrapper.DecryptFileWithPassword(new FileInfo(file), password);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Wrong password");
+                    return;
+                }    
             }
+            MessageBox.Show("Successfully decrypted");
         }
 
         private void DecryptFolder()
@@ -78,6 +102,28 @@ namespace FalseCrypt.App.ViewModels
             var password = ShowPasswordEnter();
             if (string.IsNullOrEmpty(password))
                 return;
+
+            var files = Directory.GetFiles(folder, "*.falsecrypt", SearchOption.AllDirectories);
+
+            foreach (var file in files)
+            {
+                if (!File.Exists(file))
+                    continue;
+
+                var keyData = WeakPasswordDerivation.DerivePassword(password);
+                try
+                {
+                    EncryptionCryptoWrapper.DecryptFile(new FileInfo(file), keyData.Key);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Wrong password");
+                    return;
+                }
+                
+            }
+
+            MessageBox.Show("Successfully decrypted");
         }
 
         private static IReadOnlyCollection<string> GetFiles(string filter = null)
