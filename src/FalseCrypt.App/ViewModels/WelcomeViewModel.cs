@@ -54,13 +54,14 @@ namespace FalseCrypt.App.ViewModels
                 return;
 
             var files = Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories);
+            var keyData = WeakPasswordDerivation.DerivePassword(password);
 
             foreach (var file in files)
             {
                 if (!File.Exists(file))
                     continue;
 
-                var keyData = WeakPasswordDerivation.DerivePassword(password);
+               
                 EncryptionCryptoWrapper.EncryptFile(new FileInfo(file), keyData.Key, keyData.Salt);
             }
             MessageBox.Show("Successfully encrypted");
@@ -105,12 +106,12 @@ namespace FalseCrypt.App.ViewModels
 
             var files = Directory.GetFiles(folder, "*.falsecrypt", SearchOption.AllDirectories);
 
+            var keyData = WeakPasswordDerivation.DerivePassword(password);
+
             foreach (var file in files)
             {
                 if (!File.Exists(file))
                     continue;
-
-                var keyData = WeakPasswordDerivation.DerivePassword(password);
                 try
                 {
                     EncryptionCryptoWrapper.DecryptFile(new FileInfo(file), keyData.Key);
