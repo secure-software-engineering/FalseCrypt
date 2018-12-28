@@ -38,6 +38,33 @@ namespace FalseCrypt.Crypto
             file.MoveTo(Path.Combine(file.Directory.FullName, file.Name + ".falsecrypt"));
         }
 
+        public static string EncryptMessage(string secretMessage, string password, Encoding encoding)
+        {
+            if (string.IsNullOrEmpty(secretMessage))
+                throw new ArgumentException("Secret Message Required!", nameof(secretMessage));
+            return EncryptMessage(secretMessage, encoding.GetBytes(secretMessage), encoding);
+        }
+
+        public static string EncryptMessage(string secretMessage, byte[] key, Encoding encoding)
+        {
+            if (string.IsNullOrEmpty(secretMessage))
+                throw new ArgumentException("Secret Message Required!", nameof(secretMessage));
+
+            var cipherText = EncryptMessage(encoding.GetBytes(secretMessage), key);
+            return Convert.ToBase64String(cipherText);
+        }
+
+        public static byte[] EncryptMessage(byte[] secretMessage, byte[] key)
+        {
+            return WeakSymmetricEncryption.Encrypt(secretMessage, key, null);
+        }
+
+        public static byte[] EncryptMessage(byte[] secretMessage, string password)
+        {
+            var data = WeakPasswordDerivation.DerivePassword(password);
+            return WeakSymmetricEncryption.Encrypt(secretMessage, data.Key, data.Salt);
+        }
+
         public static void DecryptFileWithPassword(FileInfo file, string password)
         {
             if (file == null || !file.Exists)
@@ -47,8 +74,6 @@ namespace FalseCrypt.Crypto
             var tmpName = file.FullName + ".tmp";
             try
             {
-                
-
                 using (var fileStream =
                     new FileStream(tmpName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
                 {
@@ -63,7 +88,7 @@ namespace FalseCrypt.Crypto
                 File.Delete(tmpName);
                 throw;
             }
-           
+
         }
 
         public static void DecryptFile(FileInfo file, byte[] key)
@@ -89,37 +114,6 @@ namespace FalseCrypt.Crypto
                 File.Delete(file.FullName + ".tmp");
                 throw;
             }
-        }
-
-        public static string EncryptMessage(string secretMessage, string password, Encoding encoding)
-        {
-            if (string.IsNullOrEmpty(secretMessage))
-                throw new ArgumentException("Secret Message Required!", nameof(secretMessage));
-
-            var plainText = encoding.GetBytes(secretMessage);
-            var cipherText = EncryptMessage(plainText, password);
-            return Convert.ToBase64String(cipherText);
-        }
-
-        public static byte[] EncryptMessage(byte[] secretMessage, string password)
-        {
-            var data = WeakPasswordDerivation.DerivePassword(password);
-            return WeakSymmetricEncryption.Encrypt(secretMessage, data.Key, data.Salt);
-        }
-
-        public static string EncryptMessage(string secretMessage, byte[] key, Encoding encoding)
-        {
-            if (string.IsNullOrEmpty(secretMessage))
-                throw new ArgumentException("Secret Message Required!", nameof(secretMessage));
-
-            var plainText = encoding.GetBytes(secretMessage);
-            var cipherText = EncryptMessage(plainText, key);
-            return Convert.ToBase64String(cipherText);
-        }
-
-        public static byte[] EncryptMessage(byte[] secretMessage, byte[] key)
-        {
-            return WeakSymmetricEncryption.Encrypt(secretMessage, key, null);
         }
 
         public static string DecryptMessage(string encryptedMessage, string password, Encoding encoding)
