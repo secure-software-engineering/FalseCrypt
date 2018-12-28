@@ -21,7 +21,7 @@ namespace FalseCrypt.App
 
             wm.ShowDialog(passwordModel);
             var hash = WeakPasswordDerivation.StringToHash(passwordModel.Password);
-            if (!hash.Equals(WeakCryptoConfig.password, StringComparison.InvariantCultureIgnoreCase))
+            if (!hash.Equals(WeakCryptoConfig.Password, StringComparison.InvariantCultureIgnoreCase))
                 Execute.OnUIThread(() => Current.Shutdown());
         }
     }

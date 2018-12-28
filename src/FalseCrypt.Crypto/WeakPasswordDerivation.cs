@@ -7,6 +7,8 @@ namespace FalseCrypt.Crypto
     {
         public static string StringToHash(string input)
         {
+            // Bug 6: Using a weak hashing provider
+            // Bug 7: Not disposing IDisposable
             var hashProvider = new MD5CryptoServiceProvider();
             var inputBytes = Encoding.UTF8.GetBytes(input);
             var hash = hashProvider.ComputeHash(inputBytes);
@@ -20,6 +22,10 @@ namespace FalseCrypt.Crypto
         public static PasswordDeriveData DerivePassword(string password)
         {
             var salt = WeakKeyGenerator.GenerateSalt();
+            // Bug 8: Iteration count is too low
+            // Bug 9: Salt size is constant 8 bytes long and hence to short
+            // Bug 10: Not disposing IDisposable
+            // Bug 11: Password as a string allows memory dump attacks
             var generator = new Rfc2898DeriveBytes(password, salt, WeakCryptoConfig.IterationCount);
 
             var cryptKey = generator.GetBytes(WeakCryptoConfig.KeySizeBytes);

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace FalseCrypt.Crypto
 {
@@ -17,6 +16,9 @@ namespace FalseCrypt.Crypto
 
             var payload = saltPayload ?? new byte[]{};
 
+            // Bug 12: Weak Encryption Provider
+            // Bug 13: Weak Operation Mode
+            // Bug 14: Not disposing IDisposable
             var des = new DESCryptoServiceProvider
             {
                 KeySize = WeakCryptoConfig.KeySizeBytes * 8,
@@ -24,17 +26,25 @@ namespace FalseCrypt.Crypto
                 Mode = CipherMode.ECB,
                 Padding = PaddingMode.PKCS7
             };
+
+            // Bug 15: Constant IV
             des.IV = WeakCryptoConfig.IV;
             des.Key = key;
 
             byte[] cipherText;
+            // Bug 16: Constant IV
+            // Bug 17: Not disposing IDisposable
             var encrypter = des.CreateEncryptor(key, WeakCryptoConfig.IV);
             using (var cipherStream = new MemoryStream())
             {
+                // Bug 18: Not disposing IDisposable
                 var cryptoStream = new CryptoStream(cipherStream, encrypter, CryptoStreamMode.Write);
                 using (var binaryWriter = new BinaryWriter(cryptoStream))
                     binaryWriter.Write(secretMessage);
                 cipherText = cipherStream.ToArray();
+
+                // BUG 19: array with clear text content should be destroyed after a encryption. Comment below shows how.
+                //Array.Clear(bytes, 0, bytes.Length);
             }
 
             using (var encryptedStream = new MemoryStream())
@@ -61,6 +71,9 @@ namespace FalseCrypt.Crypto
 
             var ivLength = WeakCryptoConfig.BlockSizeBytes;
 
+            // Bug 20: Weak Encryption Provider
+            // Bug 21: Weak Operation Mode
+            // Bug 22: Not disposing IDisposable
             var des = new DESCryptoServiceProvider
             {
                 KeySize = WeakCryptoConfig.KeySizeBytes * 8,
@@ -70,10 +83,12 @@ namespace FalseCrypt.Crypto
             var iv = new byte[ivLength];
             Array.Copy(encryptedMessage, saltLength, iv, 0, iv.Length);
 
+            // Bug 23: Not disposing IDisposable
             var decrypter = des.CreateDecryptor(cryptKey, iv);
 
             using (var plainTextStream = new MemoryStream())
             {
+                // Bug 24: Not disposing IDisposable
                 var decrypterStream = new CryptoStream(plainTextStream, decrypter, CryptoStreamMode.Write);
                 using (var binaryWriter = new BinaryWriter(decrypterStream))
                 {

@@ -54,14 +54,15 @@ namespace FalseCrypt.App.ViewModels
                 return;
 
             var files = Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories);
+
+            // BUG 1: Key derivation should not be performed outside a foreach block that is using its return value.
+            // Otherwise all operations in this loop have the same encryption key
             var keyData = WeakPasswordDerivation.DerivePassword(password);
 
             foreach (var file in files)
             {
                 if (!File.Exists(file))
                     continue;
-
-               
                 EncryptionCryptoWrapper.EncryptFile(new FileInfo(file), keyData.Key, keyData.Salt);
             }
             MessageBox.Show("Successfully encrypted");
@@ -106,6 +107,8 @@ namespace FalseCrypt.App.ViewModels
 
             var files = Directory.GetFiles(folder, "*.falsecrypt", SearchOption.AllDirectories);
 
+            // NOT A BUG for itself: The weakness of using the same key foreach file was caused by the encryption.
+            // The decryption methods just matches contract the encryption sets
             var keyData = WeakPasswordDerivation.DerivePassword(password);
 
             foreach (var file in files)
