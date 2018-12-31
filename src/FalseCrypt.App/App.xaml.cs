@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Windows;
 using Caliburn.Micro;
+using FalseCrypt.App.Shell;
 using FalseCrypt.App.ViewModels;
 using FalseCrypt.Crypto;
-using ModernApplicationFramework.Interfaces.Services;
-using ModernApplicationFramework.Interfaces.ViewModels;
-using ModernApplicationFramework.Themes;
 
 namespace FalseCrypt.App
 {
@@ -13,15 +11,14 @@ namespace FalseCrypt.App
     {
         private void OnStartUp(object sender, StartupEventArgs e)
         {
-            IoC.Get<IThemeManager>().Theme = new BlueTheme();
             var wm = IoC.Get<IWindowManager>();
             var passwordModel = IoC.Get<EnterPasswordViewModel>();            
             var m = new WindowManager();
-            m.ShowWindow(IoC.Get<IWindowViewModel>());
+            m.ShowWindow(IoC.Get<MainWindowViewModel>());
 
             wm.ShowDialog(passwordModel);
             var hash = WeakPasswordDerivation.StringToHash(passwordModel.Password);
-            if (!hash.Equals(WeakCryptoConfig.Password, StringComparison.InvariantCultureIgnoreCase))
+            if (hash == null || !hash.Equals(WeakCryptoConfig.Password, StringComparison.InvariantCultureIgnoreCase))
                 Execute.OnUIThread(() => Current.Shutdown());
         }
     }
