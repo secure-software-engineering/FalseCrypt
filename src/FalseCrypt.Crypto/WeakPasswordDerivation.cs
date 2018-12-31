@@ -9,6 +9,8 @@ namespace FalseCrypt.Crypto
         {
             // Bug 6: Using a weak hashing provider
             // Bug 7: Not disposing IDisposable
+            if (input == null)
+                return null;
             var hashProvider = new MD5CryptoServiceProvider();
             var inputBytes = Encoding.UTF8.GetBytes(input);
             var hash = hashProvider.ComputeHash(inputBytes);

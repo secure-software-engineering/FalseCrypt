@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using Caliburn.Micro;
 using FalseCrypt.Crypto;
-using ModernApplicationFramework.Controls.Dialogs.Native;
 using ModernApplicationFramework.Input.Command;
+using MessageBox = System.Windows.MessageBox;
+using Screen = Caliburn.Micro.Screen;
 
 namespace FalseCrypt.App.ViewModels
 {
@@ -132,7 +133,9 @@ namespace FalseCrypt.App.ViewModels
 
         private static IReadOnlyCollection<string> GetFiles(string filter = null)
         {
-            var fd = new NativeOpenFileDialog
+
+
+            var fd = new OpenFileDialog
             {
                 Multiselect = true,
                 CheckFileExists = true,
@@ -142,16 +145,16 @@ namespace FalseCrypt.App.ViewModels
                 fd.Filter = filter;
 
             var result = fd.ShowDialog();
-            if (result == null || !result.Value)
+            if (result != DialogResult.OK)
                 return null;
             return fd.FileNames;
         }
 
         private static string GetFolder()
         {
-            var fd = new NativeFolderBrowserDialog();
+            var fd = new FolderBrowserDialog();
             var result = fd.ShowDialog();
-            if (result == null || !result.Value)
+            if (result != DialogResult.OK)
                 return null;
 
             return fd.SelectedPath;
