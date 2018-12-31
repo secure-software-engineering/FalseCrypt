@@ -73,35 +73,37 @@ namespace FalseCrypt.Crypto
 
             // Bug 20: Weak Encryption Provider
             // Bug 21: Weak Operation Mode
-            // Bug 22: Not disposing IDisposable
-            var des = new DESCryptoServiceProvider
+            using (var des = new DESCryptoServiceProvider
             {
                 KeySize = WeakCryptoConfig.KeySizeBytes * 8,
                 BlockSize = WeakCryptoConfig.BlockSizeBytes * 8,
-                Mode = CipherMode.ECB, Padding = PaddingMode.PKCS7
-            };
-            var iv = new byte[ivLength];
-            Array.Copy(encryptedMessage, saltLength, iv, 0, iv.Length);
-
-            // Bug 23: Not disposing IDisposable
-            var decrypter = des.CreateDecryptor(cryptKey, iv);
-
-            using (var plainTextStream = new MemoryStream())
+                Mode = CipherMode.ECB,
+                Padding = PaddingMode.PKCS7
+            })
             {
-                // Bug 24: Not disposing IDisposable
-                var decrypterStream = new CryptoStream(plainTextStream, decrypter, CryptoStreamMode.Write);
-                using (var binaryWriter = new BinaryWriter(decrypterStream))
-                {
-                    binaryWriter.Write(
-                        encryptedMessage,
-                        saltLength + iv.Length,
-                        encryptedMessage.Length - saltLength - iv.Length
-                    );
-                }
+                var iv = new byte[ivLength];
+                Array.Copy(encryptedMessage, saltLength, iv, 0, iv.Length);
 
-                var pt = plainTextStream.ToArray();
-                return pt;
-            }
+                using (var decrypter = des.CreateDecryptor(cryptKey, iv))
+                {
+                    using (var plainTextStream = new MemoryStream())
+                    {
+                        using (var decrypterStream = new CryptoStream(plainTextStream, decrypter, CryptoStreamMode.Write))
+                        {
+                            using (var binaryWriter = new BinaryWriter(decrypterStream))
+                            {
+                                binaryWriter.Write(
+                                    encryptedMessage,
+                                    saltLength + iv.Length,
+                                    encryptedMessage.Length - saltLength - iv.Length
+                                );
+                            }
+                        }
+                        var pt = plainTextStream.ToArray();
+                        return pt;
+                    }
+                }
+            }   
         }
     }
 }
