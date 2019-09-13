@@ -42,21 +42,32 @@ namespace FalseCrypt.Crypto
         {
             if (string.IsNullOrEmpty(secretMessage))
                 throw new ArgumentException("Secret Message Required!", nameof(secretMessage));
-            return EncryptMessage(secretMessage, encoding.GetBytes(secretMessage), encoding);
+            var data = WeakPasswordDerivation.DerivePassword("password");
+            return EncryptMessage(secretMessage, data.Key, data.Salt, encoding);
         }
 
         public static string EncryptMessage(string secretMessage, byte[] key, Encoding encoding)
         {
+            return EncryptMessage(secretMessage, key, null, encoding);
+        }
+
+        public static string EncryptMessage(string secretMessage, byte[] key, byte[] nonSecretPayload, Encoding encoding)
+        {
             if (string.IsNullOrEmpty(secretMessage))
                 throw new ArgumentException("Secret Message Required!", nameof(secretMessage));
 
-            var cipherText = EncryptMessage(encoding.GetBytes(secretMessage), key);
+            var cipherText = EncryptMessage(encoding.GetBytes(secretMessage), key, nonSecretPayload);
             return Convert.ToBase64String(cipherText);
         }
 
         public static byte[] EncryptMessage(byte[] secretMessage, byte[] key)
         {
-            return WeakSymmetricEncryption.Encrypt(secretMessage, key, null);
+            return EncryptMessage(secretMessage, key, null);
+        }
+
+        public static byte[] EncryptMessage(byte[] secretMessage, byte[] key, byte[] nonSecretPayload)
+        {
+            return WeakSymmetricEncryption.Encrypt(secretMessage, key, nonSecretPayload);
         }
 
         public static byte[] EncryptMessage(byte[] secretMessage, string password)

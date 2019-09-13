@@ -46,6 +46,21 @@ namespace CryptoTest
         }
 
         [TestMethod]
+        public void EncryptEncryptEqual()
+        {
+            var message = "This is a secret Message";
+            var password = "password";
+
+            var cipherText1 =
+                EncryptionCryptoWrapper.EncryptMessage(message, password, Encoding.UTF8);
+
+            var data = WeakPasswordDerivation.DerivePassword(password);
+            var cipherText2 = EncryptionCryptoWrapper.EncryptMessage(message, data.Key, Encoding.UTF8);
+
+            Assert.AreNotEqual(cipherText1, cipherText2);
+        }
+
+        [TestMethod]
         public void EncryptDecrypt()
         {
             var message = "This is a secret Message";
