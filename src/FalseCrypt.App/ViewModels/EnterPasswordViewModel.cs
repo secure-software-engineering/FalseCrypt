@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows.Input;
 using Caliburn.Micro;
-using ModernApplicationFramework.Input.Command;
+using FalseCrypt.App.Command;
 
 namespace FalseCrypt.App.ViewModels
 {

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using Caliburn.Micro;
 using FalseCrypt.Crypto;
-using ModernApplicationFramework.Input.Command;
+using Prism.Commands;
 using MessageBox = System.Windows.MessageBox;
 using Screen = Caliburn.Micro.Screen;
 
@@ -16,13 +16,13 @@ namespace FalseCrypt.App.ViewModels
     [Export(typeof(WelcomeViewModel))]
     public class WelcomeViewModel : Screen
     {
-        public ICommand EncryptFileCommand => new Command(EncryptFile, () => true);
+        public ICommand EncryptFileCommand => new DelegateCommand(EncryptFile, () => true);
 
-        public ICommand EncryptFolderCommand => new Command(EncryptFolder, () => true);
+        public ICommand EncryptFolderCommand => new DelegateCommand(EncryptFolder, () => true);
 
-        public ICommand DecryptFileCommand => new Command(DecryptFile, () => true);
+        public ICommand DecryptFileCommand => new DelegateCommand(DecryptFile, () => true);
 
-        public ICommand DecryptFolderCommand => new Command(DecryptFolder, () => true);
+        public ICommand DecryptFolderCommand => new DelegateCommand(DecryptFolder, () => true);
 
         private void EncryptFile()
         {
