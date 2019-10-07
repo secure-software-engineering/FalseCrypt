@@ -13,7 +13,6 @@ import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 // XXX internal dropped? c# internal = java default?
@@ -86,10 +85,14 @@ public class WeakSymmetricEncryption {
         byte[] iv = new byte[ivLength];
         System.arraycopy(encryptedMessage, saltLength, iv, 0, iv.length);
         
-        final ByteArrayInputStream is = new ByteArrayInputStream(
-        		encryptedMessage, 
-        		saltLength + iv.length, 
-        		encryptedMessage.length - (saltLength + iv.length));
+        byte[] strippedMessage = new byte[encryptedMessage.length - (saltLength + iv.length)];
+        System.arraycopy(encryptedMessage, saltLength + iv.length, strippedMessage, 0, strippedMessage.length);
+        
+        final ByteArrayInputStream is = new ByteArrayInputStream(strippedMessage);
+//        final ByteArrayInputStream is = new ByteArrayInputStream(
+//        		encryptedMessage, 
+//        		saltLength + iv.length, 
+//        		encryptedMessage.length - (saltLength + iv.length));
         // TODO not AutoClosed
         final CipherInputStream cis = new CipherInputStream(is, des);
         
