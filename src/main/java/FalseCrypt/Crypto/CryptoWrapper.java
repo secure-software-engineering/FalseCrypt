@@ -21,8 +21,7 @@ import javax.crypto.NoSuchPaddingException;
 public class CryptoWrapper {
 	
 	private static Path getPathFromFile(final File file) {
-		// TODO URI conversion may sometimes bad -> look wizard project
-        return Paths.get(file.getAbsoluteFile().toURI());
+        return Paths.get(file.getAbsoluteFile().toURI()); // URI conversion checked with all valid UTF-8 chars
 	}
 	
 	private static byte[] getBytesFromPath(final Path path) throws IOException {
@@ -30,7 +29,7 @@ public class CryptoWrapper {
 	}
 	
 	private static void writeBytesToPath(final Path path, byte[] bytes) throws IOException {
-		Files.write(path, bytes); // TODO maybe options needed FileMode.Create, FileAccess.Write, FileShare.ReadWrite
+		Files.write(path, bytes);
 	}
 	
 	private static void renameFile(final File source) {
@@ -83,7 +82,7 @@ public class CryptoWrapper {
         if (secretMessage == null || secretMessage.isEmpty())
             throw new IllegalArgumentException("Secret Message Required!");
         
-        PasswordDeriveData data = WeakPasswordDerivation.DerivePassword("password"); // TODO String Literal instead variable correct?
+        PasswordDeriveData data = WeakPasswordDerivation.DerivePassword(password);
         return EncryptMessage(secretMessage, data.Key, data.Salt, encoding);
     }
 

@@ -15,7 +15,6 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
-// XXX internal dropped? c# internal = java default?
 public class WeakSymmetricEncryption {
 	static byte[] Encrypt(byte[] secretMessage, byte[] key, byte[] saltPayload) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IOException, IllegalBlockSizeException, BadPaddingException
     {
@@ -33,13 +32,13 @@ public class WeakSymmetricEncryption {
         // Bug 13: Weak Operation Mode
         // Bug 14: Not disposing IDisposable
         Cipher des = Cipher.getInstance("DES/ECB/PKCS5Padding"); // is identical to PKCS7 if 8 Bytes used, PKCS7 not supported by java
-        
+
 	     // Bug 15: Constant IV // TODO duplicated? 15 / 16
+//      des.init(Cipher.ENCRYPT_MODE, 
+	//		new SecretKeySpec(key, "DES"), 
+	//		new IvParameterSpec(WeakCryptoConfig.IV));
 	     // Bug 17: Not disposing IDisposable
-        // TODO cannot use IV
-//        des.init(Cipher.ENCRYPT_MODE, 
-//        		new SecretKeySpec(key, "DES"), 
-//        		new IvParameterSpec(WeakCryptoConfig.IV));
+
         des.init(Cipher.ENCRYPT_MODE, 
         		new SecretKeySpec(key, "DES"));
 
@@ -75,7 +74,6 @@ public class WeakSymmetricEncryption {
         // Bug 20: Weak Encryption Provider
         // Bug 21: Weak Operation Mode
         Cipher des = Cipher.getInstance("DES/ECB/PKCS5Padding");
-        // TODO cannot use IV
 //        des.init(Cipher.DECRYPT_MODE, 
 //        		new SecretKeySpec(key, "DES"), 
 //        		new IvParameterSpec(WeakCryptoConfig.IV));
@@ -93,9 +91,7 @@ public class WeakSymmetricEncryption {
 //        		encryptedMessage, 
 //        		saltLength + iv.length, 
 //        		encryptedMessage.length - (saltLength + iv.length));
-        // TODO not AutoClosed
         final CipherInputStream cis = new CipherInputStream(is, des);
-        
         
         byte[] buff = new byte[16];
         int bytesRead = 0;
@@ -104,7 +100,6 @@ public class WeakSymmetricEncryption {
 				ret.write(buff, 0, bytesRead);
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         

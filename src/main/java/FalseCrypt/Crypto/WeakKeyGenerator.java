@@ -10,7 +10,7 @@ public class WeakKeyGenerator {
     public static byte[] GenerateSalt()
     {
     	// BUG 4: A property with object initializer means that with each access a new instance of random with the same seed will be created. 
-    	Random RandomGenerator = new Random(SecretSeed); // TODO fix, in c++ is static
+    	Random RandomGenerator = new Random(SecretSeed);
         byte[] byteArray = new byte[WeakCryptoConfig.SaltSizeBytes]; 
         // BUG 5: System.Random is not cryptographically secure
         RandomGenerator.nextBytes(byteArray);

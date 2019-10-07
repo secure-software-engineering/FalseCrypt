@@ -14,7 +14,7 @@ public class WeakPasswordDerivation {
 	public static String StringToHash(String input) throws NoSuchAlgorithmException
     {
         // Bug 6: Using a weak hashing provider
-        // Bug 7: Not disposing IDisposable // TODO IDisposable in java?
+        // Bug 7: Not disposing IDisposable
         if (input == null)
             return null;
         
@@ -33,17 +33,17 @@ public class WeakPasswordDerivation {
     {
     	byte[] salt = argSalt == null ? WeakKeyGenerator.GenerateSalt() : argSalt;
     	// https://docs.oracle.com/javase/8/docs/technotes/guides/security/SunProviders.html
-    	// TODO correct?
     	SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
     	// Bug 8: Iteration count is too low
         // Bug 9: Salt size is constant 8 bytes long and hence to short
         // Bug 10: Not disposing IDisposable
-        // Bug 11: Password as a string allows memory dump attacks
     	PBEKeySpec pbeKeySpec = new PBEKeySpec(password.toCharArray(), salt, WeakCryptoConfig.IterationCount, WeakCryptoConfig.KeySizeBytes * 8);
     	SecretKey secretKey = factory.generateSecret(pbeKeySpec);
     	byte[] key = new byte[WeakCryptoConfig.KeySizeBytes];
-    	// XXX maybe additional bug, SecretKey ensures security and here we copy it outside?
     	System.arraycopy(secretKey.getEncoded(), 0, key, 0, WeakCryptoConfig.KeySizeBytes);
+    	
+    	// Bug 11: Password as a string allows memory dump attacks
+    	String strKey = new String(key);
 
         return new PasswordDeriveData(key, salt);
     }
