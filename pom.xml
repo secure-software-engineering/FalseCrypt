@@ -55,7 +55,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>main.Main</mainClass>
+							<mainClass>FalseCrypt.App.View</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

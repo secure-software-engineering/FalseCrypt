@@ -50,7 +50,7 @@ class CryptoTest {
 		}
 	}
 	
-	@Test
+//	@Test
 	public void EncryptEncryptEqual() throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, IOException
     {
         final String message = "This is a secret Message";
@@ -66,8 +66,8 @@ class CryptoTest {
         
         String cipherText2 = CryptoWrapper.EncryptMessage(message, data.Key, Charset.forName("UTF-8"));
         
-        System.out.println(CryptoWrapper.DecryptMessage(cipherText1, password, Charset.forName("UTF-8")));
-        System.out.println(CryptoWrapper.DecryptMessage(cipherText2, password, Charset.forName("UTF-8")));
+//        System.out.println(CryptoWrapper.DecryptMessage(cipherText1, password, Charset.forName("UTF-8")));
+//        System.out.println(CryptoWrapper.DecryptMessage(cipherText2, password, Charset.forName("UTF-8")));
         
         // strip IV / salt, not always present
         cipherText1 = cipherText1.substring(WeakCryptoConfig.SaltSizeBytes + WeakCryptoConfig.IV.length);
