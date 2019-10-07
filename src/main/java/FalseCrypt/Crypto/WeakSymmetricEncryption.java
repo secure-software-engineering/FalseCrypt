@@ -28,7 +28,7 @@ public class WeakSymmetricEncryption {
         if (secretMessage == null || secretMessage.length < 1)
             throw new IllegalArgumentException("Secret Message Required!");
 
-        byte[] payload = saltPayload == null ? new byte[WeakCryptoConfig.SaltSizeBytes] : saltPayload;
+        byte[] payload = saltPayload == null ? new byte[] {} : saltPayload;
 
         // Bug 12: Weak Encryption Provider // TODO in java you let java choose the provider, maybe better "weak algorithm?"
         // Bug 13: Weak Operation Mode
