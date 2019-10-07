@@ -1,3 +1,4 @@
+package FalseCrypt.Crypto;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.security.InvalidAlgorithmParameterException;
@@ -59,9 +60,13 @@ class CryptoTest {
             CryptoWrapper.EncryptMessage(message, password, Charset.forName("UTF-8"));
         
         PasswordDeriveData data = WeakPasswordDerivation.DerivePassword(password);
+        PasswordDeriveData data2 = WeakPasswordDerivation.DerivePassword(password);
+        Assert.assertArrayEquals(data.Key, data2.Key);
+        Assert.assertArrayEquals(data.Salt, data2.Salt);
+        
         String cipherText3 = CryptoWrapper.EncryptMessage(message, data.Key, Charset.forName("UTF-8"));
-
-        Assert.assertEquals(cipherText1, cipherText3);
+        Assert.assertEquals(cipherText1.length() - WeakCryptoConfig.SaltSizeBytes, cipherText3.length());
+        Assert.assertEquals(cipherText1.substring(WeakCryptoConfig.SaltSizeBytes), cipherText3);
     }
 	
 	@Test
