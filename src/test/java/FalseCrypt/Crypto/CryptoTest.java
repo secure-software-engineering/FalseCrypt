@@ -53,8 +53,8 @@ class CryptoTest {
 	@Test
 	public void EncryptEncryptEqual() throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, IOException
     {
-        String message = "This is a secret Message";
-        String password = "password";
+        final String message = "This is a secret Message";
+        final String password = "password";
 
         String cipherText1 =
             CryptoWrapper.EncryptMessage(message, password, Charset.forName("UTF-8"));
@@ -64,9 +64,16 @@ class CryptoTest {
         Assert.assertArrayEquals(data.Key, data2.Key);
         Assert.assertArrayEquals(data.Salt, data2.Salt);
         
-        String cipherText3 = CryptoWrapper.EncryptMessage(message, data.Key, Charset.forName("UTF-8"));
-        Assert.assertEquals(cipherText1.length() - WeakCryptoConfig.SaltSizeBytes, cipherText3.length());
-        Assert.assertEquals(cipherText1.substring(WeakCryptoConfig.SaltSizeBytes), cipherText3);
+        String cipherText2 = CryptoWrapper.EncryptMessage(message, data.Key, Charset.forName("UTF-8"));
+        
+        System.out.println(CryptoWrapper.DecryptMessage(cipherText1, password, Charset.forName("UTF-8")));
+        System.out.println(CryptoWrapper.DecryptMessage(cipherText2, password, Charset.forName("UTF-8")));
+        
+        // strip IV / salt, not always present
+        cipherText1 = cipherText1.substring(WeakCryptoConfig.SaltSizeBytes + WeakCryptoConfig.IV.length);
+        cipherText2 = cipherText2.substring(WeakCryptoConfig.IV.length);
+        Assert.assertEquals(cipherText1.length(), cipherText2.length());
+        Assert.assertEquals(cipherText1, cipherText2);
     }
 	
 	@Test
