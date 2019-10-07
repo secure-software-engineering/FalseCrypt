@@ -33,18 +33,35 @@ public class CryptoWrapper {
 		Files.write(path, bytes); // TODO maybe options needed FileMode.Create, FileAccess.Write, FileShare.ReadWrite
 	}
 	
-	private static void renameFile(final File file) {
-		file.renameTo(new File(file.getAbsoluteFile() + ".falsecrypt"));
+	private static void renameFile(final File source) {
+		File target = null;
+		
+		if (source == null || !source.exists()) {
+			return;
+		}
+		
+		if (source.getName().endsWith(".falsecrypt")) {
+			target = new File(source.getAbsoluteFile() + ".tmp");
+		} else if (source.getName().endsWith(".falsecrypt.tmp")) {
+			target = new File((String) source.getAbsoluteFile().toString().subSequence(0, source.getAbsoluteFile().toString().length() - ".falsecrypt.tmp".length()));
+		} else {
+			target = new File(source.getAbsoluteFile() + ".falsecrypt");
+		}
+		if (target.exists()) {
+			target.delete();
+		}
+		System.out.println(source.getAbsolutePath() + " -> " + target.getAbsolutePath());
+		source.renameTo(target);
 	}
 	
-	public static void EncryptFileWithPassword(File file, String password) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException
+	public static void EncryptFileWithPassword(File file, String password) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException
     {
 		if (file == null || !file.exists())
             throw new FileNotFoundException();
         
         Path target = getPathFromFile(file);
         byte[] bytes = getBytesFromPath(target);
-        byte[] cipherText = EncryptMessage(bytes, password.getBytes());
+        byte[] cipherText = EncryptMessage(bytes, password);
         writeBytesToPath(target, cipherText);
         renameFile(file);
     }
@@ -108,12 +125,15 @@ public class CryptoWrapper {
         Path target = getPathFromFile(file);
         byte[] bytes = getBytesFromPath(target);
         
-        String tmpName = file.getAbsolutePath() + ".tmp";
-        try (FileOutputStream fos = new FileOutputStream(new File(tmpName));) {
+        File tmp = new File(file.getAbsolutePath() + ".tmp");
+        if (tmp.exists()) {
+        	tmp.delete();
+        }
+        try (FileOutputStream fos = new FileOutputStream(tmp);) {
         	fos.write(DecryptMessage(bytes, password));
         }
         file.delete();
-        file.renameTo(new File(file.getAbsoluteFile().toString().replaceAll("\\.falsecrypt\\.tmp$", "")));
+        renameFile(file);
     }
 
     public static void DecryptFile(File file, byte[] key) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException
@@ -130,7 +150,7 @@ public class CryptoWrapper {
         	fos.write(m);
         }
         file.delete();
-        tmp.renameTo(new File(tmp.getAbsoluteFile().toString().replace(".falsecrypt.tmp", "")));
+        renameFile(file);
     }
 
     public static String DecryptMessage(String encryptedMessage, String password, Charset encoding) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, IOException
