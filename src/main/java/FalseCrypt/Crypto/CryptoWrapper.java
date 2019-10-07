@@ -133,7 +133,7 @@ public class CryptoWrapper {
         	fos.write(DecryptMessage(bytes, password));
         }
         file.delete();
-        renameFile(file);
+        renameFile(tmp);
     }
 
     public static void DecryptFile(File file, byte[] key) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException
