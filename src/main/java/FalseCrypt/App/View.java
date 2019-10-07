@@ -203,7 +203,7 @@ public class View extends Composite {
 		} else /* file isn't directory */ {
 			try {
 				CryptoWrapper.EncryptFileWithPassword(file, password);
-			} catch (IOException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
+			} catch (Throwable e) {
 				labInformation.setText(e.getClass().getSimpleName() + ": " + e.getMessage());
 				e.printStackTrace();
 			}
@@ -232,9 +232,8 @@ public class View extends Composite {
 		} else /* file isn't directory */ {
 			try {
 				CryptoWrapper.DecryptFileWithPassword(file, password);
-			} catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException
-					| InvalidAlgorithmParameterException | IOException e) {
-				labInformation.setText(e.getMessage());
+			} catch (Throwable e) {
+				labInformation.setText(e.getClass().getSimpleName() + ": " + e.getMessage());
 				e.printStackTrace();
 			}
 		}
