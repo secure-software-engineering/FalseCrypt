@@ -6,3 +6,20 @@ FalseCrypt is a file encryption tool like TrueCrypt or BitDefender. Its code con
 
 # Disclaimer
 By any means the source code of this project does NOT contain any good usage of the .NET Crypto API. It should therefore not be used for any serious production code. 
+
+# Java version linux / mac
+Currently only windows x64 dependencies are added of swt, maybe you need:
+[Maven SWT Linux ](https://mvnrepository.com/artifact/org.eclipse.swt/org.eclipse.swt.gtk.linux.x86_64/4.3)
+[Maven SWT Mac](https://mvnrepository.com/artifact/org.eclipse.swt/org.eclipse.swt.cocoa.macosx.x86_64/4.3)
+
+## How to use
+1. run Maven with goal "package"
+2. insert password
+3. insert absolute path to file or directory (processing every file on its own)
+4. hit encrypt / decrypt
+
+# Android
+* Supporting Android 8/8.1/9
+* Crypto should be identically with java_desktop
+* below 8 would need different Crypto as java_desktop, some methods aren't available
+* Android 10+ needs Android SAF, java.io.File doesn't work on sdcard (short explanation), DocumentFile is needed everywhere. The GUI/Activity is prepared, see TODO comments.
