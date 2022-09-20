@@ -1,6 +1,6 @@
 ﻿namespace FalseCrypt.Crypto
 {
-    public struct PasswordDeriveData
+    public ref struct PasswordDeriveData
     {
         public byte[] Key { get; }
 
