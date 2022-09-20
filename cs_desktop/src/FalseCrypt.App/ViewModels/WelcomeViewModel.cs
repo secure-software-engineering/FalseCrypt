@@ -8,7 +8,9 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using FalseCrypt.Crypto;
 using Prism.Commands;
+using DialogResult = System.Windows.Forms.DialogResult;
 using MessageBox = System.Windows.MessageBox;
+using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 using Screen = Caliburn.Micro.Screen;
 
 namespace FalseCrypt.App.ViewModels
