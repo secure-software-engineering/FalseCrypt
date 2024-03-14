@@ -8,15 +8,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Properties\**" />
+	  <EmbeddedResource Remove="Properties\**" />
+	  <None Remove="Properties\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="MSTest.TestAdapter" Version="3.2.2" />
 	  <PackageReference Include="MSTest.TestFramework" Version="3.2.2" />
+	  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\src\FalseCrypt.Crypto\FalseCrypt.Crypto.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Properties\" />
 	</ItemGroup>
 
 </Project>
