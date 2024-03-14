@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CryptoTest
 {
+    [TestClass]
     public class WeakCryptoTest
     {
         [TestMethod]
